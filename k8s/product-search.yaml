@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-search-config
+data:
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://prometheus-stack-kube-prom-prometheus.monitoring:9090" 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-search-app
+  labels:
+    app: product-search
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: product-search
+  template:
+    metadata:
+      labels:
+        app: product-search
+    spec:
+      containers:
+      - name: product-search-app
+        image: vunt94/product-search-app:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: PINECONE_API_KEY
+          value: pcsk_46kXT7_36deFBTV7K74ANhJ6gDcpNvAUQpy9o18pNxVGrHuVESSApnmFrg81SKJKBkMKDR
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "4Gi"
+            cpu: "1000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-search-service
+spec:
+  selector:
+    app: product-search
+  ports:
+    - name: api-port
+      protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP
