@@ -26,6 +26,9 @@ spec:
         image: vunt94/product-search-app:latest
         ports:
         - containerPort: 8000
+        env:
+        - name: PINECONE_API_KEY
+          value: pcsk_46kXT7_36deFBTV7K74ANhJ6gDcpNvAUQpy9o18pNxVGrHuVESSApnmFrg81SKJKBkMKDR
         resources:
           requests:
             memory: "1Gi"
@@ -33,10 +36,6 @@ spec:
           limits:
             memory: "4Gi"
             cpu: "1000m"
-        volumeMounts:
-        - name: pinecone-secret-volume
-          readOnly: true
-          mountPath: "/etc/pinecone-secrets"
 ---
 apiVersion: v1
 kind: Service
