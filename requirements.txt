@@ -1,11 +1,10 @@
 transformers==4.40.0
-torch
-pillow
-pinecone
-pytest
-faiss-cpu
-dvc
-python-dotenv
+torch==2.2.2
+pinecone==3.2.0
+faiss-cpu==1.8.0
+pytest==8.2.2
+dvc==3.48.0
+python-dotenv==1.0.1
 httpx==0.27.0
 opentelemetry-api==1.19.0
 opentelemetry-sdk==1.19.0
@@ -22,5 +21,5 @@ fastapi==0.96.0
 uvicorn[standard]==0.22.0
 python-multipart==0.0.6
 prometheus-client==0.17.1
-prometheus-fastapi-instrumentator
-python-json-logger
+prometheus-fastapi-instrumentator==6.3.0
+python-json-logger==2.0.7

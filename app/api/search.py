@@ -37,7 +37,7 @@ def get_image_embedding(image_bytes: bytes) -> np.ndarray:
     return emb_normalized.cpu().numpy()[0]
 
 @router.post("/image")
-async def search_by_image(image: bytes, top_k: int = 5):
+def perform_image_search(image: bytes, top_k: int = 5):
     embedding = get_image_embedding(image)
     results = pinecone.search(embedding, top_k=top_k, namespace="product-search")
     matches_dict = [match.to_dict() for match in results['matches']]
@@ -55,7 +55,7 @@ def get_text_embedding(text: str) -> np.ndarray:
     return emb_normalized.cpu().numpy()[0]
 
 @router.post("/text")
-async def search_by_text(query: str = Form(...), top_k: int = 5):
+def perform_text_search(query: str = Form(...), top_k: int = 5):
     embedding = get_text_embedding(query)
     results = pinecone.search(embedding, top_k=top_k, namespace="product-search")
     matches_dict = [match.to_dict() for match in results['matches']]
@@ -64,7 +64,7 @@ async def search_by_text(query: str = Form(...), top_k: int = 5):
 
 ### API upsert a new product to vector database
 @router.post("/upsert-product")
-async def upsert_product(image: UploadFile = File(...), metadata_json: str = Form(...)):
+async def perform_upsert_product(image: UploadFile = File(...), metadata_json: str = Form(...)):
     # json.loads: convert metadata JSON string into dict
     metadata_dict = json.loads(metadata_json)
     # Ensure matching of structure & data type of base model (ProductMetadata)

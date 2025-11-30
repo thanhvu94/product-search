@@ -39,7 +39,7 @@ services:
     environment:
       # Set env variable: OTLP endpoint for Jaeger
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4317
-      - PINECONE_API_KEY=pcsk_46kXT7_36deFBTV7K74ANhJ6gDcpNvAUQpy9o18pNxVGrHuVESSApnmFrg81SKJKBkMKDR
+      - PINECONE_API_KEY=${PINECONE_API_KEY}
     networks:
       - monitoring
     logging:

@@ -21,10 +21,10 @@ class PineConeManager:
         if model is None or processor is None:
             raise ValueError("clip_model and clip_processor must be provided")
         
-                # Get API key from environment
-        api_key = os.environ.get("PINECONE_API_KEY")
+        # Get API key from environment
+        api_key = os.getenv("PINECONE_API_KEY")
         if not api_key:
-            raise RuntimeError("PINECONE_API_KEY not set in environment")
+            raise ValueError("PINECONE_API_KEY environment variable not set. Cannot initialize Pinecone.")
         self.pc = Pinecone(api_key=api_key)
         
         # Initialize and create index if not existed

@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, AsyncMock
 import json
 from main import create_app
 
@@ -59,7 +59,7 @@ def test_upsert_product_success():
         "id": "1234"
     }
 
-    with patch("main.upsert_product", return_value=mock_response) as mock_fn:
+    with patch("main.perform_upsert_product", new_callable=AsyncMock, return_value=mock_response) as mock_fn:
         raw_metadata = {
             "id": "1234",
             "metadata": {"color": "red", "category": "apparel"}
