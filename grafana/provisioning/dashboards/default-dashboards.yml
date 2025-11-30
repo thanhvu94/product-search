@@ -1,0 +1,13 @@
+apiVersion: 1
+
+# Specify the directory where Grafana can get the JSOn file and load it as dashboard
+providers:
+  - name: 'Product Search Dashboards'
+    orgId: 1
+    folder: 'Product Search'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards
