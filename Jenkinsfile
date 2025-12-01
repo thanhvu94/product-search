@@ -101,7 +101,7 @@ pipeline {
                                             --zone ${ZONE} \
                                             --num-nodes=3 \
                                             --machine-type=e2-medium \
-                                            --disk-size=50                             
+                                            --disk-size=40                             
                                         echo "Cluster ${CLUSTER_NAME} successfully created and ready."
                                     fi
                                     gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${ZONE}
