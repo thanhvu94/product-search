@@ -101,12 +101,7 @@ pipeline {
                                             --zone ${ZONE} \
                                             --num-nodes=3 \
                                             --machine-type=e2-medium \
-                                            --disk-size=30
-                                        # The 'wait' command will block the script until the creation operation is done.
-                                        gcloud container operations wait \
-                                            \$(gcloud container operations list --filter="zone=${ZONE} AND operationType=CREATE_CLUSTER" --format='value(name)' --limit 1) \
-                                            --zone ${ZONE}
-                                        
+                                            --disk-size=30                                        
                                         echo "Cluster ${CLUSTER_NAME} successfully created and ready."
                                     fi
                                     gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${ZONE}
