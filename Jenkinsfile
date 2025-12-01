@@ -86,6 +86,7 @@ pipeline {
 
                                     # Setup PINECONE_API_KEY for the remote shell session
                                     export PINECONE_API_KEY='${env.PINECONE_API_KEY}'
+                                    echo "${PINECONE_API_KEY}"
                                     
                                     # Navigate to the docker-compose project directory
                                     cd ${env.PROD_COMPOSE_PATH}
@@ -108,7 +109,6 @@ pipeline {
 
                                     # --- 2. DEPLOY APPLICATION TO K8S (3 REPLICAS) ---
                                     echo "Applying Kubernetes configuration with 3 replicas and image tag: ${IMAGE_TAG}"
-                                    kubectl apply -f k8s/secret.yaml
                                     kubectl apply -f k8s/product-search.yaml
 
                                     echo "Waiting for Deployment to be ready..."

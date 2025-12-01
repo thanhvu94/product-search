@@ -35,10 +35,7 @@ spec:
             cpu: "1000m"
         env:
           - name: PINECONE_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: pinecone-api-key
-                key: PINECONE_SECRET_API_KEY
+            value: pcsk_46kXT7_36deFBTV7K74ANhJ6gDcpNvAUQpy9o18pNxVGrHuVESSApnmFrg81SKJKBkMKDR
 ---
 apiVersion: v1
 kind: Service
