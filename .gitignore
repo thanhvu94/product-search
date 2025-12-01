@@ -14,3 +14,12 @@ venv/
 # IDE
 .idea/
 .vscode/
+
+# Ignore common operating system files
+.DS_Store
+
+# Test
+.coverage
+
+# Git
+.gitignore
