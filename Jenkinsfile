@@ -99,9 +99,9 @@ pipeline {
                                         # Customize the cluster size and machine type as needed
                                         gcloud container clusters create ${CLUSTER_NAME} \
                                             --zone ${ZONE} \
-                                            --num-nodes=3 \
+                                            --num-nodes=2 \
                                             --machine-type=e2-medium \
-                                            --disk-size=30                                        
+                                            --disk-size=50                                        
                                         echo "Cluster ${CLUSTER_NAME} successfully created and ready."
                                     fi
                                     gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${ZONE}

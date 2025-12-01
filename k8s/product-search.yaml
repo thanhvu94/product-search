@@ -12,7 +12,7 @@ metadata:
   labels:
     app: product-search
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: product-search
@@ -29,7 +29,7 @@ spec:
         resources:
           requests:
             memory: "1Gi"
-            cpu: "250m"
+            cpu: "400m"
           limits:
             memory: "4Gi"
             cpu: "1000m"
