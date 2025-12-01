@@ -38,7 +38,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: pinecone-api-key
-                key: PINECONE_API_KEY_B64
+                key: PINECONE_SECRET_API_KEY
 ---
 apiVersion: v1
 kind: Service
