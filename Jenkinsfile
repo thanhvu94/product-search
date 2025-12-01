@@ -102,11 +102,18 @@ pipeline {
                                             --num-nodes=3 \
                                             --machine-type=e2-medium \
                                             --disk-size=30
+                                        # The 'wait' command will block the script until the creation operation is done.
+                                        gcloud container operations wait \
+                                            \$(gcloud container operations list --filter="zone=${ZONE} AND operationType=CREATE_CLUSTER" --format='value(name)' --limit 1) \
+                                            --zone ${ZONE}
+                                        
+                                        echo "Cluster ${CLUSTER_NAME} successfully created and ready."
                                     fi
                                     gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${ZONE}
 
                                     # --- 2. DEPLOY APPLICATION TO K8S (3 REPLICAS) ---
                                     echo "Applying Kubernetes configuration with 3 replicas and image tag: ${IMAGE_TAG}"
+                                    kubectl apply -f k8s/secret.yaml
                                     kubectl apply -f k8s/product-search.yaml
 
                                     echo "Waiting for Deployment to be ready..."
