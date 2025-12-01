@@ -92,6 +92,17 @@ pipeline {
                                     
                                     # --- 1. GKE AUTHENTICATION ---
                                     echo "Connecting to GKE cluster: ${CLUSTER_NAME}"
+                                    if gcloud container clusters describe ${CLUSTER_NAME} --zone ${ZONE} &> /dev/null; then
+                                        echo "GKE cluster ${CLUSTER_NAME} already exists. Getting credentials..."
+                                    else
+                                        echo "GKE cluster ${CLUSTER_NAME} not found. Creating new cluster..."
+                                        # Customize the cluster size and machine type as needed
+                                        gcloud container clusters create ${CLUSTER_NAME} \
+                                            --zone ${ZONE} \
+                                            --num-nodes=3 \
+                                            --machine-type=e2-medium \
+                                            --disk-size=30
+                                    fi
                                     gcloud container clusters get-credentials ${CLUSTER_NAME} --zone ${ZONE}
 
                                     # --- 2. DEPLOY APPLICATION TO K8S (3 REPLICAS) ---
