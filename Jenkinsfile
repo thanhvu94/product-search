@@ -35,19 +35,20 @@ pipeline {
 
     stages {
         stage('Test') {
+            agent {
+                docker {
+                    image 'python:3.11'
+                    args "-e TESTING_MODE=true"
+                }
+            }
             steps {
-                withCredentials([string(credentialsId: 'PINECONE_CREDENTIAL_ID', variable: 'PINECONE_API_KEY')]) {
-                    agent {
-                        docker {
-                            image 'python:3.11'
-                            args "-e PINECONE_API_KEY=${env.PINECONE_API_KEY} -e TESTING_MODE=true"
-                        }
-                    }
-                    steps {
-                        echo 'Testing model ...'
-                        // Install requirements and run PyTest
-                        sh 'pip install --timeout=600 -r requirements.txt && pytest'
-                    }
+                withCredentials([string(credentialsId: env.PINECONE_CREDENTIAL_ID, variable: 'PINECONE_API_KEY')]) {
+                    echo 'Testing model ...'
+                    // Install requirements and run PyTest
+                    sh """
+                        export PINECONE_API_KEY=${env.PINECONE_API_KEY}
+                        pip install --timeout=600 -r requirements.txt && pytest
+                    """
                 }
             }
         }
@@ -72,7 +73,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo "Deploying new image to server..."
-                withCredentials([string(credentialsId: 'PINECONE_CREDENTIAL_ID', variable: 'PINECONE_API_KEY')]) {
+                withCredentials([string(credentialsId: env.PINECONE_CREDENTIAL_ID, variable: 'PINECONE_API_KEY')]) {
                     // Login to EC2 VM
                     sshagent([env.SSH_CREDENTIAL_ID]) {
                         script {
@@ -116,7 +117,7 @@ pipeline {
                                                 --set grafana.adminPassword='admin'
                                     
                                     echo "Telling Prometheus to scrape metrics from product-search..."
-                                    kubectl label service product-search-service app=product-search
+                                    kubectl label service product-search-service app=product-search --overwrite
                                     kubectl apply -f k8s/service-monitor.yaml
                                     
                                     echo "Deployment and Monitoring setup complete!"
