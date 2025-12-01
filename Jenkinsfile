@@ -85,7 +85,7 @@ pipeline {
                                     echo "Logged in to production server!"
 
                                     # Setup PINECONE_API_KEY for the remote shell session
-                                    export PINECONE_API_KEY=${env.PINECONE_API_KEY}
+                                    export PINECONE_API_KEY='${env.PINECONE_API_KEY}'
                                     
                                     # Navigate to the docker-compose project directory
                                     cd ${env.PROD_COMPOSE_PATH}
