@@ -46,7 +46,7 @@ pipeline {
                     echo 'Testing model ...'
                     sh """
                         export PINECONE_API_KEY=${env.PINECONE_API_KEY}
-                        pip install --timeout=600 -r requirements.txt && pytest
+                        pip install --timeout=600 -r requirements.txt && pytest --cov=main --cov-report=term-missing
                     """
                 }
             }
