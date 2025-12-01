@@ -45,10 +45,10 @@ pipeline {
                 withCredentials([string(credentialsId: env.PINECONE_CREDENTIAL_ID, variable: 'PINECONE_API_KEY')]) {
                     echo 'Testing model ...'
                     // Install requirements and run PyTest
-                    sh """
-                        export PINECONE_API_KEY=${env.PINECONE_API_KEY}
-                        pip install --timeout=600 -r requirements.txt && pytest
-                    """
+                    sh(script: 'pip install --timeout=600 -r requirements.txt && pytest',
+                       label: 'Run Python test',
+                       env: [PINECONE_API_KEY: env.PINECONE_API_KEY]
+                    )
                 }
             }
         }
