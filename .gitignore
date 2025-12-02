@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+
+# Docker
+.dockerignore
+
+# IDE
+.idea/
+.vscode/
+
+# Ignore common operating system files
+.DS_Store
+
+# Test
+.coverage
+
+# Git
+.gitignore
