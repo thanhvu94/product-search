@@ -10,6 +10,7 @@
   - [i. Initial setup on GCP](#initial-setup-on-gcp)
   - [ii. CI/CD (Test-Build-Deploy) with Jenkins](#cicd-test-build-deploy-with-jenkins)
   - [iii. Deploy on GCP with k8s](#deploy-on-gcp-with-k8s)
+- [4. Run data pipeline on GCE](#deploy-data-pipeline-on-gce)
 
 
 ## Overview
@@ -159,7 +160,7 @@ kubectl port-forward svc/prometheus-stack-kube-prom-prometheus 9090:9090 -n moni
 - Prometheus: http://<VM_EXTERNAL_IP>:9090
 
 ## Deploy Data Pipeline on GCE
-### Kafka
+### Deploy MinIO, Trino, Kafka streaming
 1. Inside `product-search`, build and run services related to data pipeline on Docker:
 - Data Lakehouse (MinIO): store raw data
 - Trino / Hive: for distributed query
@@ -187,7 +188,7 @@ python ./streaming_data/etl_job.py
 docker logs kafka-consumer
 ```
 
-### Airflow
+### Batching & GX with Airflow scheduling
 1. Inside `airflow/` folder, build and run Airflow services:
 ```
 docker compose -f airflow-docker-compose.yml up --build -d
