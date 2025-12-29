@@ -72,7 +72,6 @@ cd ~
 git clone https://github.com/thanhvu94/product-search.git product-search
 cd product-search
 ```
-
 ### Initialize Kubernetes Engine usage
 1. Install gcloud CLI: https://cloud.google.com/sdk/docs/install#deb
 2. Initialize gcloud CLI with the command below and follow these steps:
@@ -151,3 +150,32 @@ kubectl port-forward svc/prometheus-stack-kube-prom-prometheus 9090:9090 -n moni
 - FastAPI App: http://<VM_EXTERNAL_IP>:8000/docs
 - Grafana (Metrics): http://<VM_EXTERNAL_IP>:3000 (Login: admin / admin)
 - Prometheus: http://<VM_EXTERNAL_IP>:9090
+
+## Deploy Data Pipeline on GCE
+### Kafka
+1. Inside `product-search`, build and run services related to data pipeline on Docker:
+- Data Lakehouse (MinIO): store raw data
+- Trino / Hive: for distributed query
+- Kafka for streaming
+- Service that consumes Kafka messages and push to Pinecone
+```
+docker compose -f docker-compose.data.yml up --build -d
+```
+2. Register a Kafka connector
+```
+bash streaming_data/run.sh register_connector kafka/kafka_connect/configs/postgresql-cdc.json
+```
+3. On your VM/local machine, run a fake streaming job which sends 5 new products every 30 seconds:
+```
+python ./streaming_data/etl_job.py
+```
+4. If everything is set up correctly, you will see Kafka messages inside UI and service consuming Kafka
+
+### Airflow
+1. Inside `airflow/` folder, build and run Airflow services:
+```
+docker compose -f airflow-docker-compose.yml up --build -d
+```
+2. You can trigger the Airflow DAG manually. It will perform 2 main tasks:
+- Batch read new product data (Parquet files) inside `./staging_data` using Spark
+- Validate with Great Expectations, then write to PostgresDB
