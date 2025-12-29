@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get install -y openjdk-17-jre-headless
 
 # Download jars libs to run Spark
-RUN mkdir -p /opt/airflow/spark_jars
+RUN mkdir -p /opt/airflow/spark_jars && chown -R airflow:root /opt/airflow/spark_jars
 RUN curl -o /opt/airflow/spark_jars/hadoop-aws.jar https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar && \
     curl -o /opt/airflow/spark_jars/aws-sdk-bundle.jar https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar && \
     curl -o /opt/airflow/spark_jars/postgresql.jar https://repo1.maven.org/maven2/org/postgresql/postgresql/42.5.4/postgresql-42.5.4.jar
