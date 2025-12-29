@@ -179,8 +179,13 @@ bash streaming_data/run.sh register_connector kafka/kafka_connect/configs/postgr
 ```
 python ./streaming_data/etl_job.py
 ```
-4. If everything is set up correctly, you will see Kafka messages inside UI and service consuming Kafka
+![Fake stream](./images/fake_streaming.png)
+4. If everything is set up correctly, you will see Kafka messages inside UI
 ![Kafka](./images/kafka.png)
+5. You can also see `kafka-consumer` service consuming message and upsert product successfully via logs.
+```
+docker logs kafka-consumer
+```
 
 ### Airflow
 1. Inside `airflow/` folder, build and run Airflow services:

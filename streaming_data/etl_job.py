@@ -106,7 +106,7 @@ def upsert_to_postgres(df_batch):
 # --- Fake streaming job ---
 def job():
     logging.info("Starting scheduled job...")
-    minio_handler = MinioHandler(host=)
+    minio_handler = MinioHandler(host=VM_PUBLIC_IP)
     
     # Load data
     try:
