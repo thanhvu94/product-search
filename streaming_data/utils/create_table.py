@@ -21,11 +21,12 @@ CREATE_PRODUCTS_TABLE_SQL = """
     );
 """
 
-def create_tables():
+def create_tables(host="127.0.0.1"):
     db_client = PostgresSQLClient(
         database="k6",
         user="k6",
         password="k6",
+        host=f"{host}"
     )
     try:
         with db_client.create_conn() as conn:

@@ -19,6 +19,7 @@ CSV_FILE_PATH = "style.csv"  # Read product data
 IMAGES_DIR = "./raw_images"   # Product raw images
 BATCH_SIZE = 5              # Send 5 items every run
 CHECKPOINT_FILE = "etl_checkpoint.txt" # Keep track of processed rows
+VM_PUBLIC_IP = "34.30.196.187"
 
 # --- Initialize Models ---
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -73,6 +74,7 @@ def upsert_to_postgres(df_batch):
         database="k6",
         user="k6",
         password="k6",
+        host=VM_PUBLIC_IP
     )
     upsert_query = """
     INSERT INTO products (
@@ -104,7 +106,7 @@ def upsert_to_postgres(df_batch):
 # --- Fake streaming job ---
 def job():
     logging.info("Starting scheduled job...")
-    minio_handler = MinioHandler()
+    minio_handler = MinioHandler(host=)
     
     # Load data
     try:
@@ -165,7 +167,7 @@ def job():
 if __name__ == "__main__":
     # Ensure tables exist
     import utils.create_table as create_table
-    create_table.create_tables()
+    create_table.create_tables(host=VM_PUBLIC_IP)
 
     # Run every 60 sec
     schedule.every(60).seconds.do(job)
