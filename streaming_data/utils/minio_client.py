@@ -3,9 +3,9 @@ import os
 import io
 
 class MinioHandler:
-    def __init__(self):
+    def __init__(self, host="127.0.0.1", port="9000"):
         # Configuration matches your docker-compose.kafka.yml
-        self.endpoint = "minio:9000"
+        self.endpoint = f"{host}:{port}"
         self.access_key = "minio_access_key"
         self.secret_key = "minio_secret_key"
         self.client = Minio(

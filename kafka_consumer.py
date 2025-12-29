@@ -27,7 +27,7 @@ clip_processor = CLIPProcessor.from_pretrained(clip_model_name) # handle resizin
 pinecone = PineConeManager(index_name="product-search", dimension=512, model=clip_model, processor=clip_processor)
 
 # MinIO handler to read product image from image bucket
-minio_handler = MinioHandler()
+minio_handler = MinioHandler(host="minio")
 BUCKET_IMAGES = "product-images"
 
 def upsert_product(event):
