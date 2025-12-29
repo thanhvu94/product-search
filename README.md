@@ -172,13 +172,15 @@ docker compose -f docker-compose.data.yml up --build -d
 ```
 bash streaming_data/run.sh register_connector kafka/kafka_connect/configs/postgresql-cdc.json
 ```
-3. On your local machine:
+3. Run fake streaming job on local machine to send data to MinIO and PostgresDB on GCE:
+- Download [DeepFashion Product Images](https://www.kaggle.com/datasets/paramaggarwal/fashion-product-images-small?select=styles.csv). Then put the `images/` folder inside `src/`, and rename to `raw_images/`. The script will get raw images from this folder.
 - Change the `VM_PUBLIC_IP` inside the `etl_job.py` to public IP of your VM
-- Run a fake streaming job which sends 5 new products every 60 seconds:
+- Run the script:
 ```
 python ./streaming_data/etl_job.py
 ```
 4. If everything is set up correctly, you will see Kafka messages inside UI and service consuming Kafka
+![Kafka](./images/kafka.png)
 
 ### Airflow
 1. Inside `airflow/` folder, build and run Airflow services:
@@ -188,3 +190,4 @@ docker compose -f airflow-docker-compose.yml up --build -d
 2. You can trigger the Airflow DAG manually. It will perform 2 main tasks:
 - Batch read new product data (Parquet files) inside `./staging_data` using Spark
 - Validate with Great Expectations, then write to PostgresDB
+![Airflow](./images/airflow.png)

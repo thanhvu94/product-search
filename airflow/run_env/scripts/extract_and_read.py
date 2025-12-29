@@ -50,7 +50,7 @@ def filter_new_parquet_files(last_timestamp_str):
 
 def create_spark_session():
     # Creates SparkSession
-    spark_jars = "/opt/airflow/spark_jars/hadoop-aws.jar,/opt/airflow/spark_jars/aws-sdk-bundle.jar,/opt/airflow/spark_jars/postgresql.jar"
+    spark_jars = "/opt/airflow/spark_jars/hadoop-aws.jar,/opt/airflow/spark_jars/aws-sdk-v2-bundle.jar,/opt/airflow/spark_jars/postgresql.jar"
     
     spark = SparkSession.builder \
         .appName("MinIO to Postgres Batch") \
