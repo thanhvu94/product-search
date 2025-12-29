@@ -65,7 +65,14 @@ Once everything is running, you can access all the UIs from your browser
 - On `Network tags`, add the label name of the firewall rule in step 3.
 - On `SSH Keys`, click `Add item` and copy public SSH key content generated on your local machine (`cat ~/.ssh/id_rsa.pub`)
 5. Remote access to EC2 VM instance `ssh -i ~/.ssh/id_rsa <VM_USERNAME>@<VM_PUBLIC_IP>
-6. For new VM, install: docker compose, minikube, kubectl
+6. For new VM, install: docker compose (Docker v2), minikube, kubectl
+```
+mkdir -p ~/.docker/cli-plugins
+curl -SL https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-linux-x86_64 \
+  -o ~/.docker/cli-plugins/docker-compose
+chmod +x ~/.docker/cli-plugins/docker-compose
+docker compose version
+```
 7. Clone the source code from git
 ```
 cd ~

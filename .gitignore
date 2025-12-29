@@ -26,7 +26,6 @@ venv/
 
 #Data
 raw_images/
-style.csv
 
 #Checkpoint
 etl_checkpoint.txt
