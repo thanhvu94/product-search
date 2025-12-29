@@ -61,8 +61,6 @@ def create_spark_session():
         .config("spark.hadoop.fs.s3a.path.style.access", "true") \
         .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
         .config("spark.hadoop.fs.s3a.connection.ssl.enabled", "false") \
-        .config("spark.hadoop.fs.s3a.connection.timeout", "60000") \
-        .config("spark.hadoop.fs.s3a.connection.establish.timeout", "60000") \
         .getOrCreate()
     
     spark.sparkContext.setLogLevel("WARN")
