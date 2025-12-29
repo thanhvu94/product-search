@@ -1,0 +1,21 @@
+name: batch_validation_checkpoint
+config_version: 1.0
+class_name: Checkpoint
+run_name_template: "%Y%m%d-%H%M%S-batch-validation"
+action_list:
+  - name: store_validation_result
+    action:
+      class_name: StoreValidationResultAction
+  - name: update_data_docs
+    action:
+      class_name: UpdateDataDocsAction
+      site_names: []
+
+validations:
+  - expectation_suite_name: product_expectations
+    # These are used for reporting/documentation, even though the batch_request 
+    # is passed dynamically in your Python code.
+    batch_request:
+      datasource_name: spark_staging_ds
+      data_asset_name: product_batch_asset
+      data_connector_name: default_runtime_data_connector

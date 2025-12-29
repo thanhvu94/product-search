@@ -1,0 +1,19 @@
+{
+    "name": "product-cdc",
+    "config": {
+      "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+      "database.hostname": "postgresql",
+      "database.port": "5432",
+      "database.user": "k6",
+      "database.password": "k6",
+      "database.dbname" : "k6",
+      "plugin.name": "pgoutput",
+      "database.server.name": "products",
+      "table.include.list": "public.products",
+
+      "transforms": "unwrap",
+      "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+      "transforms.unwrap.drop.tombstones": "true",
+      "transforms.unwrap.add.fields": "op,ts_ms"
+    }
+}

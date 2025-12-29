@@ -1,0 +1,16 @@
+apache-airflow==2.7.1
+apache-airflow-providers-postgres==5.6.1
+airflow-provider-great-expectations==0.2.6
+apache-airflow-providers-docker==3.7.5
+
+psycopg2-binary==2.9.7
+fastparquet==2023.8.0
+sqlalchemy>=1.4.24,<2.0
+pandas>=1.5,<2.1
+confluent-kafka==2.2.0
+requests==2.31.0
+fastavro==1.8.3
+schedule==1.2.2
+minio==7.2.20
+pyspark==4.0.1
+great_expectations==0.15.42

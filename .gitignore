@@ -6,7 +6,6 @@ __pycache__/
 .Python
 env/
 venv/
-.env
 
 # Docker
 .dockerignore
@@ -23,3 +22,9 @@ venv/
 
 # Git
 .gitignore
+
+#Data
+raw_images/
+
+#Checkpoint
+etl_checkpoint.txt

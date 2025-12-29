@@ -10,7 +10,10 @@ RUN pip install --no-cache-dir --upgrade --timeout=600 -r /code/requirements.txt
 
 # Copy the application code
 COPY ./app /code/app
+COPY ./streaming_data /code/streaming_data
 COPY ./main.py /code/main.py
+COPY ./kafka_consumer.py /code/kafka_consumer.py
+
 
 # Expose the port the app runs on
 EXPOSE 8000

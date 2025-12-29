@@ -10,6 +10,7 @@
   - [i. Initial setup on GCP](#initial-setup-on-gcp)
   - [ii. CI/CD (Test-Build-Deploy) with Jenkins](#cicd-test-build-deploy-with-jenkins)
   - [iii. Deploy on GCP with k8s](#deploy-on-gcp-with-k8s)
+- [4. Run data pipeline on GCE](#deploy-data-pipeline-on-gce)
 
 
 ## Overview
@@ -65,14 +66,20 @@ Once everything is running, you can access all the UIs from your browser
 - On `Network tags`, add the label name of the firewall rule in step 3.
 - On `SSH Keys`, click `Add item` and copy public SSH key content generated on your local machine (`cat ~/.ssh/id_rsa.pub`)
 5. Remote access to EC2 VM instance `ssh -i ~/.ssh/id_rsa <VM_USERNAME>@<VM_PUBLIC_IP>
-6. For new VM, install: docker compose, minikube, kubectl
+6. For new VM, install: docker compose (Docker v2), minikube, kubectl
+```
+mkdir -p ~/.docker/cli-plugins
+curl -SL https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-linux-x86_64 \
+  -o ~/.docker/cli-plugins/docker-compose
+chmod +x ~/.docker/cli-plugins/docker-compose
+docker compose version
+```
 7. Clone the source code from git
 ```
 cd ~
 git clone https://github.com/thanhvu94/product-search.git product-search
 cd product-search
 ```
-
 ### Initialize Kubernetes Engine usage
 1. Install gcloud CLI: https://cloud.google.com/sdk/docs/install#deb
 2. Initialize gcloud CLI with the command below and follow these steps:
@@ -151,3 +158,42 @@ kubectl port-forward svc/prometheus-stack-kube-prom-prometheus 9090:9090 -n moni
 - FastAPI App: http://<VM_EXTERNAL_IP>:8000/docs
 - Grafana (Metrics): http://<VM_EXTERNAL_IP>:3000 (Login: admin / admin)
 - Prometheus: http://<VM_EXTERNAL_IP>:9090
+
+## Deploy Data Pipeline on GCE
+### Deploy MinIO, Trino, Kafka streaming
+1. Inside `product-search`, build and run services related to data pipeline on Docker:
+- Data Lakehouse (MinIO): store raw data
+- Trino / Hive: for distributed query
+- Kafka for streaming
+- Service that consumes Kafka messages and push to Pinecone
+```
+docker compose -f docker-compose.data.yml up --build -d
+```
+2. Register a Kafka connector
+```
+bash streaming_data/run.sh register_connector kafka/kafka_connect/configs/postgresql-cdc.json
+```
+3. Run fake streaming job on local machine to send data to MinIO and PostgresDB on GCE:
+- Download [DeepFashion Product Images](https://www.kaggle.com/datasets/paramaggarwal/fashion-product-images-small?select=styles.csv). Then put the `images/` folder inside `src/`, and rename to `raw_images/`. The script will get raw images from this folder.
+- Change the `VM_PUBLIC_IP` inside the `etl_job.py` to public IP of your VM
+- Run the script:
+```
+python ./streaming_data/etl_job.py
+```
+![Fake stream](./images/fake_streaming.png)
+4. If everything is set up correctly, you will see Kafka messages inside UI
+![Kafka](./images/kafka.png)
+5. You can also see `kafka-consumer` service consuming message and upsert product successfully via logs.
+```
+docker logs kafka-consumer
+```
+
+### Batching & GX with Airflow scheduling
+1. Inside `airflow/` folder, build and run Airflow services:
+```
+docker compose -f airflow-docker-compose.yml up --build -d
+```
+2. You can trigger the Airflow DAG manually. It will perform 2 main tasks:
+- Batch read new product data (Parquet files) inside `./staging_data` using Spark
+- Validate with Great Expectations, then write to PostgresDB
+![Airflow](./images/airflow.png)
