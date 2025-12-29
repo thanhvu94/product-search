@@ -172,7 +172,9 @@ docker compose -f docker-compose.data.yml up --build -d
 ```
 bash streaming_data/run.sh register_connector kafka/kafka_connect/configs/postgresql-cdc.json
 ```
-3. On your VM/local machine, run a fake streaming job which sends 5 new products every 30 seconds:
+3. On your local machine:
+- Change the `VM_PUBLIC_IP` inside the `etl_job.py` to public IP of your VM
+- Run a fake streaming job which sends 5 new products every 60 seconds:
 ```
 python ./streaming_data/etl_job.py
 ```

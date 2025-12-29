@@ -18,7 +18,7 @@ DEST_TABLE = "offline_products"
 # File to store the latest processed timestamp
 CHECKPOINT_FILE = "spark_batch_checkpoint.txt" 
 # Local path for the intermediate data batch
-DATA_PATH = "./staging_data/current_batch" 
+DATA_PATH = "./staging_data/current_batch"
 
 # File format used in the ETL script: products_batch_{start_idx}_{end_idx}_{YYYYMMDD_HHMMSS}.parquet
 TIMESTAMP_PATTERN = r"(\d{8}_\d{6})"

@@ -12,11 +12,6 @@ def get_last_checkpoint():
     # Return random checkpoint if no file found
     return "20000101_000000"
 
-def save_latest_timestamp(latest_timestamp):
-    with open(TEMP_TS_FILE, 'w') as f:
-        f.write(latest_timestamp)
-    print(f"Latest timestamp saved to temporary file: {latest_timestamp}")
-
 # Get unread parquet files
 def filter_new_parquet_files(last_timestamp_str):
     minio_client = Minio("minio:9000", access_key=ACCESS_KEY, secret_key=SECRET_KEY, secure=False)
@@ -80,8 +75,6 @@ def run_extract_job(**kwargs):
         kwargs['ti'].xcom_push(key='latest_timestamp', value=None)
         return
 
-    os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-17-openjdk-amd64"
-    os.environ["PATH"] = os.environ["JAVA_HOME"] + "/bin:" + os.environ["PATH"]
     spark = create_spark_session()
     
     try:
