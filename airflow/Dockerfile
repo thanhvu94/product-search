@@ -6,11 +6,6 @@ RUN apt-get update && \
     apt-get install -y libgomp1 && \
     apt-get install -y openjdk-17-jre-headless
 
-# Set Java path so Spark can find it
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-ENV PATH="$JAVA_HOME/bin:$PATH"
-ENV PYTHONPATH="${PYTHONPATH}:/opt/airflow/scripts"
-
 # Download jars libs to run Spark
 RUN mkdir -p /opt/airflow/spark_jars
 RUN curl -o /opt/airflow/spark_jars/hadoop-aws.jar https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar && \
@@ -18,6 +13,12 @@ RUN curl -o /opt/airflow/spark_jars/hadoop-aws.jar https://repo1.maven.org/maven
     curl -o /opt/airflow/spark_jars/postgresql.jar https://repo1.maven.org/maven2/org/postgresql/postgresql/42.5.4/postgresql-42.5.4.jar
 
 USER airflow
+
+# Set Java path so Spark can find it
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH="$JAVA_HOME/bin:$PATH"
+ENV PYTHONPATH="${PYTHONPATH}:/opt/airflow/scripts"
+
 # Install required libs
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt

@@ -34,6 +34,8 @@ def run_validate_write_job(**kwargs):
         print("No new batch data or temporary timestamp found. Exiting load job.")
         return
 
+    os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-17-openjdk-amd64"
+    os.environ["PATH"] = os.environ["JAVA_HOME"] + "/bin:" + os.environ["PATH"]
     spark = create_spark_session()
     
     try:

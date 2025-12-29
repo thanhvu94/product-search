@@ -80,6 +80,8 @@ def run_extract_job(**kwargs):
         kwargs['ti'].xcom_push(key='latest_timestamp', value=None)
         return
 
+    os.environ["JAVA_HOME"] = "/usr/lib/jvm/java-17-openjdk-amd64"
+    os.environ["PATH"] = os.environ["JAVA_HOME"] + "/bin:" + os.environ["PATH"]
     spark = create_spark_session()
     
     try:
